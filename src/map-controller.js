@@ -1,6 +1,7 @@
 'use strict'
 
 var gMap
+var gIsMobileMenuOpen = false
 
 function init() {
   renderLocations()
@@ -27,7 +28,7 @@ function renderLocations() {
   const strHTMLs = locations.map(
     location =>
       `
-            <div class="location-container" onclick="onGoToMarker(${location.lat}, ${location.lng})">${location.name} <span class="delete-btn" onclick="onDeleteLocation(${location.id})">X</span></div>
+            <div class="location-container" onclick="onGoToMarker(event,${location.lat}, ${location.lng})">${location.name} <span class="delete-btn" onclick="onDeleteLocation(event, ${location.id})">X</span></div>
             `
   )
   document.querySelector('.location-list').innerHTML = strHTMLs.join('')
@@ -43,7 +44,6 @@ function onGetPosition() {
 }
 
 function showLocation(position) {
-  console.log('showlocation', position)
   var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
   placeMarker(latLng, gMap)
 }
@@ -74,12 +74,6 @@ function placeMarker(position, map = gMap) {
   })
   map.panTo(position)
   console.log('position', position)
-
-  //   marker.addListener('click', () => {
-  //     map.setZoom(8)
-  //     console.log(marker.getPosition())
-  //     onAddLocation(marker.getPosition())
-  //   })
 }
 
 function onAddLocation(position) {
@@ -101,12 +95,15 @@ function onAddLocation(position) {
   renderLocations()
 }
 
-function onGoToMarker(lat, lng) {
+function onGoToMarker(ev, lat, lng) {
+  // ev.stopPropagation()
   const latLng = new google.maps.LatLng(lat, lng)
   placeMarker(latLng, gMap)
+  onCloseMobileMenu()
 }
 
-function onDeleteLocation(locId) {
+function onDeleteLocation(ev, locId) {
+  ev.stopPropagation()
   deleteLocation(locId)
   renderLocations()
 }
@@ -114,24 +111,21 @@ function onDeleteLocation(locId) {
 function onSearchLocation() {
   var elSearchInput = document.querySelector('.search-input')
   var placeName = elSearchInput.value
-  // console.log(placeName);
 
   var request = {
     query: placeName,
     fields: ['name', 'geometry'],
   }
 
-  // console.log(request.query)
   var service = new google.maps.places.PlacesService(gMap)
 
   service.findPlaceFromQuery(request, function (results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-      for (var i = 0; i < results.length; i++) {
-        console.log(results[i]['geometry'].location)
-      }
+      for (var i = 0; i < results.length; i++) {}
       placeMarker(results[0]['geometry'].location, gMap)
     }
   })
+  onCloseMobileMenu()
 }
 
 function renderMarkers() {
@@ -140,4 +134,18 @@ function renderMarkers() {
   locations.forEach(loc => {
     placeMarker(loc.position)
   })
+}
+
+function onOpenMobileMenu() {
+  const elMobileMenu = document.querySelector('.user-options')
+  elMobileMenu.style.transform = 'translateX(0)'
+  gIsMobileMenuOpen = true
+}
+
+function onCloseMobileMenu() {
+  if (gIsMobileMenuOpen) {
+    const elMobileMenu = document.querySelector('.user-options')
+    elMobileMenu.style.transform = 'translateX(-100%)'
+    gIsMobileMenuOpen = false
+  }
 }

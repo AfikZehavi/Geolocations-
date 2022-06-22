@@ -14,3 +14,8 @@
 
 @import 'helpers/helpers.css';
 @import 'helpers/vars.css';
+
+
+/* Media Query */
+
+@import 'components/mq.css';
