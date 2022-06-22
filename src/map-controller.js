@@ -90,9 +90,8 @@ export function onAddLocation(position) {
   renderLocations()
 }
 
-function onGoToMarker(ev, lat, lng, url) {
-  // ev.stopPropagation()
-  const latLng = new google.maps.LatLng(lat, lng)
+function onGoToMarker(lat, lng, url) {
+  mapService.panTo(lat, lng)
   window.history.pushState({ path: url }, '', url)
   onCloseMobileMenu()
 }
