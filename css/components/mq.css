@@ -10,8 +10,8 @@
     .user-options {
         grid-row: 1 / span 2;
         position: fixed;
-        /* width: 120%; */
-        padding-right: 100px;
+        width: 250px;
+        /* padding-right: 100px; */
         z-index: 100;
         transform: translateX(-100%);
         transition: transform 0.3s ease-in;

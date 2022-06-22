@@ -18,6 +18,7 @@ function initMap(lat = 31.977334843289025, lng = 34.77963258643429) {
     gMap = new google.maps.Map(elMap, options)
 
     gMap.addListener('click', function (e) {
+        onCloseMobileMenu()
         placeMarker(e.latLng, gMap)
 
     })
