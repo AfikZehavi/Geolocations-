@@ -1,26 +1,28 @@
-'use strict'
+import { addLocation, getLocations, deleteLocation } from './services/map-services.js'
+import { mapService } from './services/map-services.js'
 
-var gMap
+// initMap()
+onInit()
+
 var gIsMobileMenuOpen = false
 
-function init() {
-  renderLocations()
-  renderMarkers()
-}
+window.onGoToMarker = onGoToMarker
+window.onDeleteLocation = onDeleteLocation
 
-function initMap(lat = 31.977334843289025, lng = 34.77963258643429) {
-  var elMap = document.querySelector('.map')
-  var options = {
-    center: { lat, lng },
-    zoom: 15,
-  }
+// events
+document.querySelector('.mobile-menu').addEventListener('click', onOpenMobileMenu)
+document.querySelector('.overlay').addEventListener('click', onCloseMobileMenu)
+document.querySelector('.search-form').addEventListener('click', onSearchLocation)
 
-  gMap = new google.maps.Map(elMap, options)
-
-  gMap.addListener('click', function (e) {
-    onAddLocation(e.latLng)
-    console.log('e', e.latLng.lat())
-  })
+function onInit() {
+  mapService
+    .initMap()
+    .then(() => {
+      console.log('Map is ready')
+      renderLocations()
+      renderMarkers()
+    })
+    .catch(() => console.log('Error: cannot init map'))
 }
 
 function renderLocations() {
@@ -45,7 +47,7 @@ function onGetPosition() {
 
 function showLocation(position) {
   var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
-  placeMarker(latLng, gMap)
+  //   mapService.addMarker(latLng, gMap)
 }
 
 function handleLocationError(error) {
@@ -67,18 +69,7 @@ function handleLocationError(error) {
   }
 }
 
-function placeMarker(position, name, map = gMap) {
-  var marker = new google.maps.Marker({
-    position: position,
-    map: map,
-    title: name,
-    showInfo: true,
-  })
-  map.panTo(position)
-  console.log('position', position)
-}
-
-function onAddLocation(position) {
+export function onAddLocation(position) {
   // Check that the location isnt already in the list
   var position = position
   var locations = getLocations()
@@ -93,14 +84,14 @@ function onAddLocation(position) {
   if (!name || !name.length) return
 
   addLocation(name, position)
-  placeMarker(position, name)
+  mapService.addMarker(position, name)
   renderLocations()
 }
 
 function onGoToMarker(ev, lat, lng) {
   // ev.stopPropagation()
   const latLng = new google.maps.LatLng(lat, lng)
-  placeMarker(latLng, gMap)
+
   onCloseMobileMenu()
 }
 
@@ -129,12 +120,21 @@ function onSearchLocation() {
   })
   onCloseMobileMenu()
 }
+function onPanTo(loc) {
+  console.log('Panning the Map')
+  mapService.panTo(loc.lat, loc.lng)
+}
+
+function onAddMarker(loc) {
+  console.log(loc)
+  mapService.addMarker({ lat: loc.lat, lng: loc.lng })
+}
 
 function renderMarkers() {
   const locations = getLocations()
 
   locations.forEach(loc => {
-    placeMarker(loc.position)
+    onAddMarker(loc.position)
   })
 }
 

@@ -1,8 +1,8 @@
-function saveToStorage(key, val) {
+export function saveToStorage(key, val) {
   localStorage.setItem(key, JSON.stringify(val))
 }
 
-function loadFromStorage(key) {
+export function loadFromStorage(key) {
   var val = localStorage.getItem(key)
   if (val === undefined) val = null
 
