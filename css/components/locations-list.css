@@ -6,8 +6,9 @@
 }
 
 .my-locations h2 {
-  padding-left: 1em;
+  /* padding-left: 1em; */
   width: 8em;
+  color: rgb(76, 71, 71);
 }
 
 .location-list {
@@ -23,7 +24,7 @@
   display: flex;
   justify-content: space-between;
   font-size: 1.5em;
-  border-bottom: 1px solid var(--clr1);
+  border-bottom: 0.8px solid var(--clr1);
   /* border-radius: 20px; */
   height: 2em;
   line-height: 2em;
@@ -33,7 +34,6 @@
 
 .location-container:hover {
   background-color: var(--clr1);
-  /* box-shadow: 0px 0px 5px 1px black; */
 }
 
 .location-container:first-child {
@@ -44,13 +44,14 @@
   color: var(--clr2);
   font-size: 1em;
   padding: 0.1111em;
+  line-height: 2em;
 }
 
 .delete-btn:hover {
-  background-color: red;
+  background-color: rgb(194, 53, 53);
   box-sizing: content-box;
   color: white;
-  box-shadow: 0px 0px 2px 1px black;
+  transition: all 0.4s;
 }
 
 .search-form {
@@ -59,4 +60,7 @@
 
 .input-group {
   height: 50px;
+  display: flex;
+  justify-content: center;
+  margin-block: 1rem;
 }

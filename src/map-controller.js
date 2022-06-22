@@ -19,7 +19,6 @@ function onInit() {
   mapService
     .initMap()
     .then(() => {
-      console.log('Map is ready')
       renderLocations()
       renderMarkers()
       goToQueryStringModalParam()
@@ -29,7 +28,6 @@ function onInit() {
 
 function renderLocations() {
   const locations = getLocations()
-  console.log(locations)
   const strHTMLs = locations.map(
     location =>
       `
@@ -122,7 +120,6 @@ function onSearchLocation(e) {
   onCloseMobileMenu()
 }
 function onPanTo(loc) {
-  console.log('Panning the Map')
   mapService.panTo(loc.lat, loc.lng)
 }
 
