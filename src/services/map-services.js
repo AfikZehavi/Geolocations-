@@ -9,7 +9,6 @@ const gLocations = loadFromStorage(LOCATIONS) || []
 
 export function addLocation(name, position) {
   var location = _createLocations(name, position)
-  console.log('lat', location.lat)
   gLocations.push(location)
   _saveLocations()
 }
@@ -21,6 +20,7 @@ function _createLocations(name, position) {
     position,
     lat: position.lat(),
     lng: position.lng(),
+    url: createQueryString(position.lat(), position.lng()),
   }
 }
 
@@ -88,4 +88,10 @@ function _connectGoogleApi() {
     elGoogleApi.onload = resolve
     elGoogleApi.onerror = () => reject('Google script failed to load')
   })
+}
+
+function createQueryString(lat, lng) {
+  const url = window.location.origin + window.location.pathname + `?lat=${lat}&lng=${lng}`
+  window.history.pushState({ path: url }, '', url)
+  return url
 }

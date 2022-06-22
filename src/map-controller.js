@@ -21,16 +21,18 @@ function onInit() {
       console.log('Map is ready')
       renderLocations()
       renderMarkers()
+      goToQueryStringModalParam()
     })
     .catch(() => console.log('Error: cannot init map'))
 }
 
 function renderLocations() {
   const locations = getLocations()
+  console.log(locations)
   const strHTMLs = locations.map(
     location =>
       `
-            <div class="location-container" onclick="onGoToMarker(event,${location.lat}, ${location.lng})">${location.name} <span class="delete-btn" onclick="onDeleteLocation(event, ${location.id})">X</span></div>
+            <div class="location-container" onclick="onGoToMarker(${location.lat}, ${location.lng}, '${location.url}')">${location.name} <span class="delete-btn" onclick="onDeleteLocation(event, ${location.id})">X</span></div>
             `
   )
   document.querySelector('.location-list').innerHTML = strHTMLs.join('')
@@ -88,10 +90,10 @@ export function onAddLocation(position) {
   renderLocations()
 }
 
-function onGoToMarker(ev, lat, lng) {
+function onGoToMarker(ev, lat, lng, url) {
   // ev.stopPropagation()
   const latLng = new google.maps.LatLng(lat, lng)
-
+  window.history.pushState({ path: url }, '', url)
   onCloseMobileMenu()
 }
 
@@ -154,4 +156,17 @@ function onCloseMobileMenu() {
     elMobileMenu.style.transform = 'translateX(-100%)'
     gIsMobileMenuOpen = false
   }
+}
+
+function goToQueryStringModalParam() {
+  const queryStringParams = new URLSearchParams(window.location.search)
+  const lat = queryStringParams.get('lat') || ''
+  const lng = queryStringParams.get('lng') || ''
+
+  if (lat && lng) {
+    const url = window.location.href
+    onGoToMarker(lat, lng, url)
+  }
+
+  //   if (readingId) onOpenModal(readingId)
 }
