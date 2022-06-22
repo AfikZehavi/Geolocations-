@@ -29,3 +29,6 @@
 .my-location-btn:hover {
     background-color: var(--clr1);
 }
+.mobile-menu {
+    display: none;
+}
