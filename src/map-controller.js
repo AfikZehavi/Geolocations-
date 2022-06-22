@@ -17,7 +17,7 @@ function initMap(lat = 31.977334843289025, lng = 34.77963258643429) {
   gMap = new google.maps.Map(elMap, options)
 
   gMap.addListener('click', function (e) {
-    placeMarker(e.latLng, gMap)
+    onAddLocation(e.latLng)
     console.log('e', e.latLng.lat())
   })
 }
@@ -32,6 +32,7 @@ function renderLocations() {
   )
   document.querySelector('.location-list').innerHTML = strHTMLs.join('')
 }
+
 function onGetPosition() {
   if (!navigator.geolocation) {
     alert('HTML5 Geolocation is not supported in your browser')
@@ -74,11 +75,11 @@ function placeMarker(position, map = gMap) {
   map.panTo(position)
   console.log('position', position)
 
-  marker.addListener('click', () => {
-    // map.setZoom(8);
-    console.log(marker.getPosition())
-    onAddLocation(marker.getPosition())
-  })
+  //   marker.addListener('click', () => {
+  //     map.setZoom(8)
+  //     console.log(marker.getPosition())
+  //     onAddLocation(marker.getPosition())
+  //   })
 }
 
 function onAddLocation(position) {
@@ -96,8 +97,10 @@ function onAddLocation(position) {
   if (!name || !name.length) return
 
   addLocation(name, position)
+  placeMarker(position)
   renderLocations()
 }
+
 function onGoToMarker(lat, lng) {
   const latLng = new google.maps.LatLng(lat, lng)
   placeMarker(latLng, gMap)
@@ -133,8 +136,6 @@ function onSearchLocation() {
 
 function renderMarkers() {
   const locations = getLocations()
-
-  console.log(locations)
 
   locations.forEach(loc => {
     placeMarker(loc.position)
