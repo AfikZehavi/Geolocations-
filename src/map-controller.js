@@ -138,6 +138,8 @@ function renderMarkers() {
 
 function onOpenMobileMenu() {
   const elMobileMenu = document.querySelector('.user-options')
+  const elOverlay = document.querySelector('.overlay')
+  elOverlay.classList.remove('hidden')
   elMobileMenu.style.transform = 'translateX(0)'
   gIsMobileMenuOpen = true
 }
@@ -145,6 +147,8 @@ function onOpenMobileMenu() {
 function onCloseMobileMenu() {
   if (gIsMobileMenuOpen) {
     const elMobileMenu = document.querySelector('.user-options')
+    const elOverlay = document.querySelector('.overlay')
+    elOverlay.classList.add('hidden')
     elMobileMenu.style.transform = 'translateX(-100%)'
     gIsMobileMenuOpen = false
   }
