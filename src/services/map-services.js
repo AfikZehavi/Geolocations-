@@ -67,18 +67,18 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
   })
 }
 
-function addMarker(position, name) {
+function addMarker(position, name, isCustom = false) {
   var marker = new google.maps.Marker({
     position,
+    icon: isCustom ? '../images/pin.png' : null,
     map: gMap,
-    title: name,
+    title: isCustom ? 'You are here' : name,
   })
 
-  const infowindow = new google.maps.InfoWindow({ content: name })
+  const infowindow = new google.maps.InfoWindow({ content: marker.title })
   marker.addListener('click', () => {
     infowindow.open({
       anchor: marker,
-
       map: gMap,
       shouldFocus: false,
     })

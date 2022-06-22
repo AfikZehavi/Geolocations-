@@ -50,14 +50,14 @@ function onGetPosition() {
 
 function showLocation(position) {
   var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
-  //   mapService.addMarker(latLng, gMap)
+
   const pos = {
     lat: latLng.lat(),
     lng: latLng.lng(),
   }
-  console.log(pos)
 
   onPanTo(pos)
+  onCustomMarker(pos)
 }
 
 function handleLocationError(error) {
@@ -128,6 +128,10 @@ function onPanTo(loc) {
 
 function onAddMarker(loc, name) {
   mapService.addMarker({ lat: loc.lat, lng: loc.lng }, name)
+}
+
+function onCustomMarker(loc, name) {
+  mapService.addMarker({ lat: loc.lat, lng: loc.lng }, name, true)
 }
 
 function renderMarkers() {
