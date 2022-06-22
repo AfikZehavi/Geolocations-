@@ -107,10 +107,9 @@ function onSearchLocation(e) {
   var elSearchInput = document.querySelector('.search-input')
   var placeName = elSearchInput.value
 
-  const searchLoc = mapService.getPlacesService(placeName)
-  console.log(searchLoc)
+  mapService.getPlacesService(placeName)
 
-  onAddMarker(searchLoc)
+  //   onAddMarker(searchLoc)
   onCloseMobileMenu()
 }
 function onPanTo(loc) {
