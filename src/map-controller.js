@@ -118,16 +118,15 @@ function onPanTo(loc) {
   mapService.panTo(loc.lat, loc.lng)
 }
 
-function onAddMarker(loc) {
-  console.log(loc)
-  mapService.addMarker({ lat: loc.lat, lng: loc.lng })
+function onAddMarker(loc, name) {
+  mapService.addMarker({ lat: loc.lat, lng: loc.lng }, name)
 }
 
 function renderMarkers() {
   const locations = getLocations()
 
   locations.forEach(loc => {
-    onAddMarker(loc.position)
+    onAddMarker(loc.position, loc.name)
   })
 }
 
