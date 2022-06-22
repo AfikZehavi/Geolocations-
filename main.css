@@ -1,0 +1,16 @@
+
+@import 'components/body.css';
+
+/* MAP */
+@import 'components/map.css';
+
+/* USER OPTIONS */
+@import 'components/user-options.css';
+/* Locations List */
+
+@import 'components/locations-list.css';
+
+/* helpers */
+
+@import 'helpers/helpers.css';
+@import 'helpers/vars.css';
