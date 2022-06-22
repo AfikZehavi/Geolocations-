@@ -73,6 +73,16 @@ function addMarker(position, name) {
     map: gMap,
     title: name,
   })
+
+  const infowindow = new google.maps.InfoWindow({ content: name })
+  marker.addListener('click', () => {
+    infowindow.open({
+      anchor: marker,
+
+      map: gMap,
+      shouldFocus: false,
+    })
+  })
   markers.push(marker)
   return marker
 }
