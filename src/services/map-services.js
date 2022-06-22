@@ -111,8 +111,6 @@ export function getPlacesService(query) {
 
   service.findPlaceFromQuery(req, (results, status) => {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-      // onAddMarker(results[0]['geometry'].location)
-      addMarker(results[0]['geometry'].location)
       panTo(results[0]['geometry'].location.lat(), results[0]['geometry'].location.lng())
     }
   })
