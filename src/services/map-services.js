@@ -103,17 +103,18 @@ function createQueryString(lat, lng) {
 export function getPlacesService(query) {
   service = new google.maps.places.PlacesService(gMap)
   console.log(service)
-
+  var location
   var req = {
     query,
     fields: ['name', 'geometry'],
   }
 
-  return service.findPlaceFromQuery(req, function (results, status) {
+   service.findPlaceFromQuery(req, function (results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       for (var i = 0; i < results.length; i++) {}
       // onAddMarker(results[0]['geometry'].location)
-      return results[0]['geometry'].location
+        console.log(results[0]['geometry'].location);
     }
   })
+  return location
 }
