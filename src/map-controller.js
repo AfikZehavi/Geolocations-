@@ -2,7 +2,7 @@
 
 
 var gMap
-
+var gIsMobileMenuOpen = false
 function initMap(lat = 31.977334843289025, lng = 34.77963258643429) {
     var elMap = document.querySelector('.map')
     var options = {
@@ -139,4 +139,10 @@ function onSearchLocation() {
             placeMarker(results[0]['geometry'].location, gMap)
         }
     });
+}
+
+function onOpenMobileMenu() {
+    const elMobileMenu = document.querySelector('.user-options')
+    elMobileMenu.style.transform = 'translateX(0)' 
+    gIsMobileMenuOpen = true
 }
