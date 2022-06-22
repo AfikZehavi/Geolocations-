@@ -67,10 +67,12 @@ function handleLocationError(error) {
   }
 }
 
-function placeMarker(position, map = gMap) {
+function placeMarker(position, name, map = gMap) {
   var marker = new google.maps.Marker({
     position: position,
     map: map,
+    title: name,
+    showInfo: true,
   })
   map.panTo(position)
   console.log('position', position)
@@ -91,7 +93,7 @@ function onAddLocation(position) {
   if (!name || !name.length) return
 
   addLocation(name, position)
-  placeMarker(position)
+  placeMarker(position, name)
   renderLocations()
 }
 
