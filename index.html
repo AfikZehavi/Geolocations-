@@ -14,7 +14,7 @@
     <title>Place Keeper</title>
 </head>
 
-<body>
+<body onload="init()">
 
     <div class="my-location-btn" onclick="onGetPosition()">
         <img src="images/mylocation.png" alt="">
@@ -40,6 +40,7 @@
         </div>
     </div>
     <script src="src/services/util-service.js"></script>
+    <script src="src/services/storage-service.js"></script>
     <script src="src/services/map-services.js"></script>
     <script src="src/map-controller.js"></script>
     <!-- <script async defer
