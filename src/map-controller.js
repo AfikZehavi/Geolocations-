@@ -100,6 +100,7 @@ function onDeleteLocation(ev, locId) {
   ev.stopPropagation()
   deleteLocation(locId)
   renderLocations()
+  renderMarkers()
 }
 
 function onSearchLocation(e) {
@@ -157,6 +158,4 @@ function goToQueryStringModalParam() {
     const url = window.location.href
     onGoToMarker(lat, lng, url)
   }
-
-  //   if (readingId) onOpenModal(readingId)
 }

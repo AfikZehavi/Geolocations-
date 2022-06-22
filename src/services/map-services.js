@@ -6,6 +6,7 @@ import { onAddLocation } from '../map-controller.js'
 
 const LOCATIONS = 'locationsDB'
 const gLocations = loadFromStorage(LOCATIONS) || []
+let markers = []
 
 export function addLocation(name, position) {
   var location = _createLocations(name, position)
@@ -29,9 +30,10 @@ export function getLocations() {
 }
 
 export function deleteLocation(locId) {
-  console.log(locId)
   const locIdx = gLocations.findIndex(location => location.id === `${locId}`)
   gLocations.splice(locIdx, 1)
+  markers[locIdx].setMap(null)
+  markers.splice(locIdx, 1)
   _saveLocations()
 }
 
@@ -71,6 +73,7 @@ function addMarker(position, name) {
     map: gMap,
     title: name,
   })
+  markers.push(marker)
   return marker
 }
 
