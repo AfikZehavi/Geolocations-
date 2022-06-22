@@ -8,11 +8,11 @@ var gIsMobileMenuOpen = false
 
 window.onGoToMarker = onGoToMarker
 window.onDeleteLocation = onDeleteLocation
+window.onSearchLocation = onSearchLocation
 
 // events
 document.querySelector('.mobile-menu').addEventListener('click', onOpenMobileMenu)
 document.querySelector('.overlay').addEventListener('click', onCloseMobileMenu)
-document.querySelector('.search-form').addEventListener('click', onSearchLocation)
 
 function onInit() {
   mapService
@@ -103,23 +103,15 @@ function onDeleteLocation(ev, locId) {
   renderLocations()
 }
 
-function onSearchLocation() {
+function onSearchLocation(e) {
+  e.preventDefault()
   var elSearchInput = document.querySelector('.search-input')
   var placeName = elSearchInput.value
 
-  var request = {
-    query: placeName,
-    fields: ['name', 'geometry'],
-  }
+  const searchLoc = mapService.getPlacesService(placeName)
+  console.log(searchLoc)
 
-  var service = new google.maps.places.PlacesService(gMap)
-
-  service.findPlaceFromQuery(request, function (results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-      for (var i = 0; i < results.length; i++) {}
-      placeMarker(results[0]['geometry'].location, gMap)
-    }
-  })
+  onAddMarker(searchLoc)
   onCloseMobileMenu()
 }
 function onPanTo(loc) {

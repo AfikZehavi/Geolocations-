@@ -45,13 +45,16 @@ export const mapService = {
   initMap,
   addMarker,
   panTo,
+  getPlacesService,
 }
 var gMap
+var service
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
   console.log('InitMap')
   return _connectGoogleApi().then(() => {
     console.log('google available')
+
     gMap = new google.maps.Map(document.querySelector('#map'), {
       center: { lat, lng },
       zoom: 15,
@@ -78,7 +81,7 @@ function panTo(lat, lng) {
 
 function _connectGoogleApi() {
   if (window.google) return Promise.resolve()
-  const API_KEY = 'AIzaSyCCepA_c55nnZt5dioo2oR9hO2StyQwkC8'
+  const API_KEY = 'AIzaSyCCepA_c55nnZt5dioo2oR9hO2StyQwkC8&libraries=places'
   var elGoogleApi = document.createElement('script')
   elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`
   elGoogleApi.async = true
@@ -94,4 +97,22 @@ function createQueryString(lat, lng) {
   const url = window.location.origin + window.location.pathname + `?lat=${lat}&lng=${lng}`
   window.history.pushState({ path: url }, '', url)
   return url
+}
+
+export function getPlacesService(query) {
+  service = new google.maps.places.PlacesService(gMap)
+  console.log(service)
+
+  var req = {
+    query,
+    fields: ['name', 'geometry'],
+  }
+
+  return service.findPlaceFromQuery(req, function (results, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      for (var i = 0; i < results.length; i++) {}
+      // onAddMarker(results[0]['geometry'].location)
+      return results[0]['geometry'].location
+    }
+  })
 }
