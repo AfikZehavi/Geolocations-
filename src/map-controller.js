@@ -9,6 +9,7 @@ var gIsMobileMenuOpen = false
 window.onGoToMarker = onGoToMarker
 window.onDeleteLocation = onDeleteLocation
 window.onSearchLocation = onSearchLocation
+window.onGetPosition = onGetPosition
 
 // events
 document.querySelector('.mobile-menu').addEventListener('click', onOpenMobileMenu)
@@ -50,6 +51,13 @@ function onGetPosition() {
 function showLocation(position) {
   var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
   //   mapService.addMarker(latLng, gMap)
+  const pos = {
+    lat: latLng.lat(),
+    lng: latLng.lng(),
+  }
+  console.log(pos)
+
+  onPanTo(pos)
 }
 
 function handleLocationError(error) {
