@@ -6,6 +6,7 @@ import { onAddLocation } from '../map-controller.js'
 
 const LOCATIONS = 'locationsDB'
 const gLocations = loadFromStorage(LOCATIONS) || []
+let markers = []
 
 export function addLocation(name, position) {
   var location = _createLocations(name, position)
@@ -31,9 +32,10 @@ export function getLocations() {
 }
 
 export function deleteLocation(locId) {
-  console.log(locId)
   const locIdx = gLocations.findIndex(location => location.id === `${locId}`)
   gLocations.splice(locIdx, 1)
+  markers[locIdx].setMap(null)
+  markers.splice(locIdx, 1)
   _saveLocations()
 }
 
@@ -53,10 +55,7 @@ var gMap
 var service
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
-  console.log('InitMap')
   return _connectGoogleApi().then(() => {
-    console.log('google available')
-
     gMap = new google.maps.Map(document.querySelector('#map'), {
       center: { lat, lng },
       zoom: 15,
@@ -67,18 +66,27 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
   })
 }
 
-function addMarker(position, name, id) {
+function addMarker(position, name, isCustom = false) {
   var marker = new google.maps.Marker({
     position,
+    icon: isCustom ? '../images/pin.png' : null,
     map: gMap,
-    title: name,
-    id,
+    title: isCustom ? 'You are here' : name,
   })
+
+  const infowindow = new google.maps.InfoWindow({ content: marker.title })
+  marker.addListener('click', () => {
+    infowindow.open({
+      anchor: marker,
+      map: gMap,
+      shouldFocus: false,
+    })
+  })
+  markers.push(marker)
   return marker
 }
 
 function panTo(lat, lng) {
-  console.log('hereeee')
   var laLatLng = new google.maps.LatLng(lat, lng)
   gMap.panTo(laLatLng)
 }

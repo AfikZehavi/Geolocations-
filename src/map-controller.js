@@ -9,6 +9,7 @@ var gIsMobileMenuOpen = false
 window.onGoToMarker = onGoToMarker
 window.onDeleteLocation = onDeleteLocation
 window.onSearchLocation = onSearchLocation
+window.onGetPosition = onGetPosition
 
 // events
 document.querySelector('.mobile-menu').addEventListener('click', onOpenMobileMenu)
@@ -18,7 +19,6 @@ function onInit() {
   mapService
     .initMap()
     .then(() => {
-      console.log('Map is ready')
       renderLocations()
       renderMarkers()
       goToQueryStringModalParam()
@@ -28,7 +28,6 @@ function onInit() {
 
 function renderLocations() {
   const locations = getLocations()
-  console.log(locations)
   const strHTMLs = locations.map(
     location =>
       `
@@ -49,7 +48,14 @@ function onGetPosition() {
 
 function showLocation(position) {
   var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
-  //   mapService.addMarker(latLng, gMap)
+
+  const pos = {
+    lat: latLng.lat(),
+    lng: latLng.lng(),
+  }
+
+  onPanTo(pos)
+  onCustomMarker(pos)
 }
 
 function handleLocationError(error) {
@@ -100,7 +106,7 @@ function onDeleteLocation(ev, locId) {
   ev.stopPropagation()
   deleteLocation(locId)
   renderLocations()
-  
+  renderMarkers()
 }
 
 function onSearchLocation(e) {
@@ -114,20 +120,22 @@ function onSearchLocation(e) {
   onCloseMobileMenu()
 }
 function onPanTo(loc) {
-  console.log('Panning the Map')
   mapService.panTo(loc.lat, loc.lng)
 }
 
-function onAddMarker(loc) {
-  console.log(loc)
-  mapService.addMarker({ lat: loc.lat, lng: loc.lng })
+function onAddMarker(loc, name) {
+  mapService.addMarker({ lat: loc.lat, lng: loc.lng }, name)
+}
+
+function onCustomMarker(loc, name) {
+  mapService.addMarker({ lat: loc.lat, lng: loc.lng }, name, true)
 }
 
 function renderMarkers() {
   const locations = getLocations()
 
   locations.forEach(loc => {
-    onAddMarker(loc.position)
+    onAddMarker(loc.position, loc.name)
   })
 }
 
@@ -158,6 +166,4 @@ function goToQueryStringModalParam() {
     const url = window.location.href
     onGoToMarker(lat, lng, url)
   }
-
-  //   if (readingId) onOpenModal(readingId)
 }
