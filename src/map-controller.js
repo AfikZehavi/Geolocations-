@@ -100,6 +100,7 @@ function onDeleteLocation(ev, locId) {
   ev.stopPropagation()
   deleteLocation(locId)
   renderLocations()
+  
 }
 
 function onSearchLocation(e) {

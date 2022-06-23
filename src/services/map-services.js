@@ -24,6 +24,8 @@ function _createLocations(name, position) {
   }
 }
 
+
+
 export function getLocations() {
   return gLocations
 }
@@ -65,11 +67,12 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
   })
 }
 
-function addMarker(position, name) {
+function addMarker(position, name, id) {
   var marker = new google.maps.Marker({
     position,
     map: gMap,
     title: name,
+    id,
   })
   return marker
 }
@@ -109,23 +112,12 @@ export function getPlacesService(query) {
     fields: ['name', 'geometry'],
   }
 
-<<<<<<< HEAD
-   service.findPlaceFromQuery(req, function (results, status) {
-=======
   service.findPlaceFromQuery(req, (results, status) => {
->>>>>>> 0133226b0c4d5c6e8a6e8d56a5f16c549ae93530
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-<<<<<<< HEAD
+
       // onAddMarker(results[0]['geometry'].location)
-<<<<<<< HEAD
-        console.log(results[0]['geometry'].location);
-=======
       addMarker(results[0]['geometry'].location)
-=======
->>>>>>> 0c2f0b04e1422afc72532b877654254227831317
       panTo(results[0]['geometry'].location.lat(), results[0]['geometry'].location.lng())
->>>>>>> 0133226b0c4d5c6e8a6e8d56a5f16c549ae93530
     }
   })
-  return location
 }
